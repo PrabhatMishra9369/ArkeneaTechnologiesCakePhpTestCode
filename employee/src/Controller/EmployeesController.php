@@ -17,13 +17,14 @@ class EmployeesController extends AppController {
           'limit' => '3'
         ];
         $employee = $this->paginate($this->Employees->find());
-        if ($this->request->is('post')) {
-            $requestData=$this->request->getData();
-            $name=$requestData['searchName'];
-            if($name!=""){
-                $employeeArr = $this->Employees->find("all")->where(['employee_name LIKE '=>"%$name%"]);
-                // $employee=$this->Paginator->paginate($employeeArr, array('page' => 0));
-                $employee=$employeeArr;
+        if (isset($_POST['searchName'])) {
+            if(!empty($_POST['searchName'])){
+                $name=$_POST['searchName'];
+                if($name!=""){
+                    $employeeArr = $this->Employees->find("all")->where(['employee_name LIKE '=>"%$name%"]);
+                    // $employee=$this->Paginator->paginate($employeeArr, array('page' => 0));
+                    $employee=$employeeArr;
+                }
             }
         }
         $this->set(compact('employee'));
